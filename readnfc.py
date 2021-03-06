@@ -120,6 +120,13 @@ def touched(tag):
 
     return True
 
+def removed():
+    print("Tag removed, stopping playback.")
+    urltoget = usersettings.sonoshttpaddress + "/" + sonosroom_local + "/pause"
+    r = requests.get(urltoget)
+    
+    return True
+
 print("")
 print("")
 print("Loading and checking readnfc")
@@ -175,5 +182,5 @@ if usersettings.sendanonymoususagestatistics == "yes":
     r = requests.post(appsettings.usagestatsurl, data = {'time': time.time(), 'value1': appsettings.appversion, 'value2': hex(uuid.getnode()), 'value3': 'appstart'})
 
 while True:
-    reader.connect(rdwr={'on-connect': touched, 'beep-on-connect': False})
+    reader.connect(rdwr={'on-connect': touched, 'on-release': removed, 'beep-on-connect': False})
     time.sleep(0.1);
