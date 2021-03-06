@@ -120,7 +120,7 @@ def touched(tag):
 
     return True
 
-def removed():
+def removed(tag):
     print("Tag removed, stopping playback.")
     urltoget = usersettings.sonoshttpaddress + "/" + sonosroom_local + "/pause"
     r = requests.get(urltoget)
