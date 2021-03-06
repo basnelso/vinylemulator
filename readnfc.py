@@ -6,9 +6,16 @@ import appsettings #you shouldnt need to edit this file
 import usersettings #this is the file you might need to edit
 import sys
 
+lastTag = None
+
 # this function gets called when a NFC tag is detected
 def touched(tag):
     global sonosroom_local
+
+    if lasttag == tag:
+        urltoget = usersettings.sonoshttpaddress + "/" + sonosroom_local + "/play"
+        r = requests.get(urltoget)
+        return True
 
     if tag.ndef:
         for record in tag.ndef.records:
@@ -124,6 +131,8 @@ def removed(tag):
     print("Tag removed, stopping playback.")
     urltoget = usersettings.sonoshttpaddress + "/" + sonosroom_local + "/pause"
     r = requests.get(urltoget)
+
+    lasttag = tag
     
     return True
 
