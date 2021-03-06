@@ -9,13 +9,7 @@ import sys
 # this function gets called when a NFC tag is detected
 def touched(tag):
     global sonosroom_local
-
-    print('tag is: ', tag)
-    print('last tag is:', lasttag)
-    if lasttag == tag:
-        urltoget = usersettings.sonoshttpaddress + "/" + sonosroom_local + "/play"
-        r = requests.get(urltoget)
-        return True
+    global last_album
 
     if tag.ndef:
         for record in tag.ndef.records:
@@ -26,6 +20,13 @@ def touched(tag):
                 return True
             
             receivedtext_lower = receivedtext.lower()
+
+            if last_album == receivedtext_lower:
+                urltoget = usersettings.sonoshttpaddress + "/" + sonosroom_local + "/play"
+                r = requests.get(urltoget)
+                return True
+            else:
+                last_album = receivedtext_lower
 
             print("")
             print("Read from NFC tag: "+ receivedtext)
@@ -132,9 +133,6 @@ def removed(tag):
     urltoget = usersettings.sonoshttpaddress + "/" + sonosroom_local + "/pause"
     r = requests.get(urltoget)
 
-    global lasttag
-    lasttag = tag
-    
     return True
 
 print("")
@@ -172,7 +170,7 @@ print("... and connected to " + str(reader))
 print ("")
 print ("SONOS API")
 sonosroom_local = usersettings.sonosroom
-lasttag = None
+last_album = None
 print ("API address set to " + usersettings.sonoshttpaddress)
 print ("Sonos room set to " + sonosroom_local)
 
