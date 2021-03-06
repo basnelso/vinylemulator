@@ -6,7 +6,7 @@ import appsettings #you shouldnt need to edit this file
 import usersettings #this is the file you might need to edit
 import sys
 
-lastTag = None
+global lastTag
 
 # this function gets called when a NFC tag is detected
 def touched(tag):
@@ -171,6 +171,7 @@ print("... and connected to " + str(reader))
 print ("")
 print ("SONOS API")
 sonosroom_local = usersettings.sonosroom
+lasttag = None
 print ("API address set to " + usersettings.sonoshttpaddress)
 print ("Sonos room set to " + sonosroom_local)
 
